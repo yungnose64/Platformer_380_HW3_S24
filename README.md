@@ -1,4 +1,4 @@
-# Space Game with the Wolfie2D Game Engine
+# Platformer (Spiked Acid) with the Wolfie2D Game Engine
 ## How to transpile and run
 
 Before you start working, make sure you run `npm install` in the console so that all necessary node libraries are installed. Note, you must do so in the directory where `package.json` is located.
