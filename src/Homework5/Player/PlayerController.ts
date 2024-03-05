@@ -100,7 +100,7 @@ export default class PlayerController extends StateMachineAI {
         super.changeState(stateName);
     }
 
-    // HOMEWORK 5 - TODO
+    // HOMEWORK 5 - TODO - done
     /**
      * We want to detect when our player is moving over one of the switches in the world, and along with the sound
      * and label changes, we also visually want to change the tile.
@@ -113,6 +113,15 @@ export default class PlayerController extends StateMachineAI {
      */
     update(deltaT: number): void {
 		super.update(deltaT);
+
+        let ownerPos = this.owner.position;
+        let tileBelow = new Vec2(ownerPos.x, ownerPos.y + 16); // tile underneath the player's world position
+        let colRow = this.tilemap.getColRowAt(tileBelow); // tile position
+
+        if (this.tilemap.getTileAtWorldPosition(tileBelow) == 8) { // 8 is the type of tile, the Off tile
+            this.tilemap.setTileAtRowCol(colRow, 9);
+            this.emitter.fireEvent(HW5_Events.PLAYER_HIT_SWITCH);
+        }
 
 		if(this.currentState instanceof Jump){
 			Debug.log("playerstate", "Player State: Jump");
