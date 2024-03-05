@@ -386,6 +386,8 @@ export default class GameLevel extends Scene {
         balloon.addPhysics();
         balloon.addAI(BalloonController, aiOptions);
         balloon.setGroup("balloon");
+        balloon.setTrigger("player", HW5_Events.PLAYER_HIT_BALLOON, null);
+        console.log("poo ");
 
     }
 
@@ -416,6 +418,19 @@ export default class GameLevel extends Scene {
      * 
      */
     protected handlePlayerBalloonCollision(player: AnimatedSprite, balloon: AnimatedSprite) {
+        const playerController = player._ai as PlayerController;
+        const balloonController = balloon._ai as BalloonController;
+        const suitColor = playerController.suitColor;
+        const balloonColor = balloonController.color;
+        
+        console.log(suitColor + " " + balloonColor);
+
+        if (player.position == balloon.position) {
+            console.log(suitColor + " " + balloonColor);
+
+            this.emitter.fireEvent(HW5_Events.PLAYER_HIT_BALLOON);
+            this.emitter.fireEvent(HW5_Events.BALLOON_POPPED);
+        }
     }
 
     /**
