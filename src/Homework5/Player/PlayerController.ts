@@ -113,7 +113,7 @@ export default class PlayerController extends StateMachineAI {
      */
     update(deltaT: number): void {
 		super.update(deltaT);
-
+        
         let ownerPos = this.owner.position;
         let tileBelow = new Vec2(ownerPos.x, ownerPos.y + 16); // tile underneath the player's world position
         let colRow = this.tilemap.getColRowAt(tileBelow); // tile position
