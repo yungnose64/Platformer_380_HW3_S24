@@ -47,7 +47,6 @@ export default class Level1 extends GameLevel {
        this.load.keepAudio("switch");
        this.load.keepAudio("player_death");
        this.load.keepAudio("pop_sound");
-       this.load.keepAudio("level_music");
     }
 
     startScene(): void {

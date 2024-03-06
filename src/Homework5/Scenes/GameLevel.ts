@@ -21,7 +21,7 @@ import HW5_ParticleSystem from "../HW5_ParticleSystem";
 import PlayerController from "../Player/PlayerController";
 import MainMenu from "./MainMenu";
 
-// HOMEWORK 5 - TODO
+// HOMEWORK 5 - TODO - done
 /**
  * Add in some level music.
  * 
@@ -366,7 +366,7 @@ export default class GameLevel extends Scene {
         this.levelEndArea.color = new Color(0, 0, 0, 0);
     }
 
-    // HOMEWORK 5 - TODO
+    // HOMEWORK 5 - TODO - done
     /*
         Make sure balloons are being set up properly to have triggers so that when they collide
         with players, they send out a trigger event.
@@ -387,11 +387,9 @@ export default class GameLevel extends Scene {
         balloon.addAI(BalloonController, aiOptions);
         balloon.setGroup("balloon");
         balloon.setTrigger("player", HW5_Events.PLAYER_HIT_BALLOON, null);
-        console.log("poo ");
-
     }
 
-    // HOMEWORK 5 - TODO
+    // HOMEWORK 5 - TODO - done
     /**
      * You must implement this method.
      * There are 3 types of collisions:
@@ -416,21 +414,38 @@ export default class GameLevel extends Scene {
      * You don't have to use this yourself, but you can see examples
      * of it in this class.
      * 
-     */
+     */   
     protected handlePlayerBalloonCollision(player: AnimatedSprite, balloon: AnimatedSprite) {
-        const playerController = player._ai as PlayerController;
-        const balloonController = balloon._ai as BalloonController;
-        const suitColor = playerController.suitColor;
-        const balloonColor = balloonController.color;
-        
-        console.log(suitColor + " " + balloonColor);
+        if (balloon !== undefined) {
+            let playerColor = (<PlayerController>player._ai).suitColor;
+            let balloonColor = (<BalloonController>balloon._ai).color;
 
-        if (player.position == balloon.position) {
-            console.log(suitColor + " " + balloonColor);
+            this.emitter.fireEvent(GameEventType.PLAY_SOUND, {key: "pop_sound", loop: false, holdReference: false});
+            let rgbColor;
+                switch (balloonColor) {
+                    case HW5_Color.RED:
+                        rgbColor = new Color(255, 0, 0);
+                        break;
+                    case HW5_Color.BLUE:
+                        rgbColor = new Color(0, 0, 255);
+                        break;
+                    case HW5_Color.GREEN:
+                        rgbColor = new Color(0, 255, 0);
+                        break;
+                }
+                this.system.changeColor(rgbColor);
+                this.system.startSystem(1000, 1, balloon.position);
 
-            this.emitter.fireEvent(HW5_Events.PLAYER_HIT_BALLOON);
-            this.emitter.fireEvent(HW5_Events.BALLOON_POPPED);
+                if (playerColor !== balloonColor) {
+                    this.incPlayerLife(-1); 
+                } 
+                this.emitter.fireEvent(HW5_Events.BALLOON_POPPED, {
+                    owner: balloon.id,
+                    playerColor: playerColor,
+                    balloonColor: balloonColor
+                });
         }
+        else return;
     }
 
     /**
