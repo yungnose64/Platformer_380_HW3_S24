@@ -434,7 +434,6 @@ export default class GameLevel extends Scene {
                         break;
                 }
                 this.system.changeColor(rgbColor);
-                this.system.startSystem(1000, 1, balloon.position);
 
                 if (playerColor !== balloonColor) {
                     this.incPlayerLife(-1); 
