@@ -24,8 +24,10 @@ export default abstract class BalloonState extends State {
 	 * and adjust the balloon gravity effects accordingly based on its color
 	 */
 	handleInput(event: GameEvent): void {
+		let new_color = HW5_Color.RED;
+
 		if (event.type == HW5_Events.SUIT_COLOR_CHANGE) {
-			let new_color = event.data.get("color");
+			new_color = event.data.get("color");
 			if (this.parent.color == new_color){
 				this.finished(BalloonStates.SINKING);
 			}
@@ -50,6 +52,19 @@ export default abstract class BalloonState extends State {
 					}
 				} 
 			}
+		}
+
+		if (event.type == HW5_Events.PLAYER_MOVE) {
+			let position = event.data.get("position");
+			let initVelocityX = this.parent.velocity.x;
+			let distanceFromPlayer = Math.sqrt((Math.pow(position.x - this.owner.position.x, 2)) + (Math.pow(position.y - this.owner.position.y, 2)))
+
+			if (distanceFromPlayer <= 160 && this.parent.gravity == 0) {
+				this.parent.velocity.x *= 2;
+			}
+			else {
+				this.parent.velocity.x = initVelocityX;
+			} 
 		}
 	}
 

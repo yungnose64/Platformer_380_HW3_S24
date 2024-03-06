@@ -4,7 +4,7 @@ import AnimatedSprite from "../../Wolfie2D/Nodes/Sprites/AnimatedSprite";
 import { HW5_Events } from "../hw5_enums";
 import BalloonState from "./BalloonState";
 
-// HOMEWORK 5 - TODO
+// HOMEWORK 5 - TODO - done
 /**
  * For this homework, you'll have to implement an additional state to the AI from scratch.
  * 
@@ -22,9 +22,17 @@ import BalloonState from "./BalloonState";
  */
 export default class ZeroGravity extends BalloonState {
 	onEnter(): void {
+        this.parent.gravity = 0;
 	}
 
-	onExit(): Record<string, any> {
-		return {};
-	}
+    onExit(): Record<string, any> {
+        this.parent.gravity = 1000;
+        return {};
+    }
+
+    update(deltaT: number): void {
+        super.update(deltaT);
+        this.parent.velocity.x = this.parent.direction.x * this.parent.speed;
+        this.owner.move(this.parent.velocity.scaled(deltaT));
+    }
 }
